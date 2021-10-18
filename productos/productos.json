@@ -1,44 +1,22 @@
 [
   {
-    "name": "aaaaaaaaaaa",
-    "price": 822,
-    "thumbnail": "bdcascccccccccccccchd",
+    "name": "Celular",
+    "price": 25000,
+    "thumbnail": "facebook.com",
+    "descripcion": "jdijwdw",
+    "codigo": 222233,
+    "stock": 10,
+    "timestamp": "October 18th 2021, 1:52:08 pm",
     "id": 0
   },
   {
-    "name": "bbbbbbbbbbb",
-    "price": 822,
-    "thumbnail": "bdcascccccccccccccchd",
+    "name": "Objeto eliminado",
+    "price": 0,
+    "thumbnail": "Objeto eliminado",
+    "descripcion": "Objeto eliminado",
+    "codigo": 0,
+    "stock": 0,
+    "timestamp": "Objeto eliminado",
     "id": 1
-  },
-  {
-    "name": "jejejejejej",
-    "price": 822,
-    "thumbnail": "bdcascccccccccccccchd",
-    "id": 2
-  },
-  {
-    "name": "Objeto eliminado",
-    "price": 0,
-    "thumbnail": "Objeto eliminado",
-    "id": 3
-  },
-  {
-    "name": "pruebaaaaaaaaaaaaaaaaaaaa",
-    "price": 822,
-    "thumbnail": "bdcascccccccccccccchd",
-    "id": 4
-  },
-  {
-    "name": "Objeto eliminado",
-    "price": 0,
-    "thumbnail": "Objeto eliminado",
-    "id": 5
-  },
-  {
-    "name": "siiiiiiii",
-    "price": 822,
-    "thumbnail": "bdcascccccccccccccchd",
-    "id": 6
   }
 ]
