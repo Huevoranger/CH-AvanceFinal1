@@ -180,20 +180,25 @@ router.delete("/productos/:id", (req, res)=>{
 //POST | CREA UN NUEVO CARRITO Y DEVUELVE SU ID
 router.post("/carrito",(req, res)=>{
     let arr_car=[]
+    //lectura del archivo
     let fileR= fs.readFile("./productos/carrito.json", "utf-8", (err, data)=>{
         if(err) throw "Error al leer el archivo"
         arr_car=JSON.parse(data)
+        //se obtiene el id
         let id_car= arr_car.length
+        //se obtiene el timestamp
         let timestamp_car= moment().format('MMMM Do YYYY, h:mm:ss a');
         let obj_car={
             "id_car": id_car,
             "timestamp_car":timestamp_car,
-            "producto_car":"Aun no se ha agregado nada al carrito"
+            "producto_car":[]
         }
+        //se agrega al array
         arr_car.push(obj_car)
+        //se ajusta al formato y se guarda
         let escritura_arr_carr= JSON.stringify(arr_car,null,2)
         fs.writeFileSync("./productos/carrito.json", escritura_arr_carr, "utf-8")
-        res.send({"message":"objeto agregado", "data":obj_car.id_car})
+        res.send({"message":"Carrito agregado", "data":obj_car.id_car})
         console.log(`Carrito creado con el id: ${id_car}`)
     })
 })
@@ -215,7 +220,7 @@ router.delete("/carrito/:id", (req, res)=>{
         arr_car[id_car]={
             "id_car": id_car,
             "timestamp_car":timestamp_car,
-            "producto_car":"Carrito vacío"
+            "producto_car":[]
         }
         //Se formatea a Strring para ser guardado
         let producto_escritura= JSON.stringify(arr_car,null,2)
@@ -242,49 +247,102 @@ router.get("/carrito/:id/productos", (req, res)=>{
         //Filtrado por el id
         let arrNew= arr_car.filter(x=> x.id_car== idNum)
         //Notificación al servidor
-        res.send(arrNew[0])
+        res.send(arrNew[0].producto_car)
         console.log("Se han mostrado los productos del carrito id: "+idNum)
         //Envio al usuario
     })    
 })
 
 
-// router.post("/carrito/:id/productos/:id_prod", (req, res)=>{
-//     //Obtención del Id a modificar
-//     let idNum= req.params.id
-//     let idNum_prod= req.params.id_prod
-//     //Inicialización del array
-//     let arr_car=[]
-//     let arr_prod=[]
-//     //Lectura del archivo
-//     let fileR= fs.readFile("./productos/carrito.json", "utf-8", (err, data)=>{
-//         if(err) throw "Error al leer el archivo"
-//         //Obtención del valor y guardado en el array
-//         arr_car = JSON.parse(data);
-//         let arrNew_car= arr_car.filter(x=> x.id_car== idNum)
-//         let fileR= fs.readFile("./productos/productos.json", "utf-8", (err, data_prod)=>{
-//             if(err) throw "Error al leer el archivo"
-//             arr_prod = JSON.parse(data_prod);
-//             let arrNew_prod= arr_prod.filter(x=> x.id== idNum_prod)
-//             arrNew_car[0].producto_car= arrNew_prod[0]
-//             console.log(arrNew_car)
-//         })
-//         //Filtrado por el id
-//         //Notificación al servidor
-//         res.send(arrNew[0])
-//     })    
+router.post("/carrito/:id/productos/:id_prod", (req, res)=>{
+    //Obtención del Id a modificar
+    let idNum= req.params.id
+    let idNum_prod= req.params.id_prod
+    //Inicialización del array
+    let arr_car=[]
+    let arr_prod=[]
+
     
-//     //Se formatea a String para ser guardado
-//     let id_car= parseInt(idNum)  
-//     let timestamp_car= moment().format('MMMM Do YYYY, h:mm:ss a');
-//     arr_car[id_car]={
-//         "id_car": id_car,
-//         "timestamp_car":timestamp_car,
-//         "producto_car":"Carrito vacío"
-//     }
-//     let producto_escritura= JSON.stringify(arr_car,null,2)
-//     //Se guarda
-//     fs.writeFileSync("./productos/carrito.json", producto_escritura, "utf-8")
-// })
+    //Lectura del archivo
+    let fileR= fs.readFile("./productos/carrito.json", "utf-8", (err, data)=>{
+        if(err) throw "Error al leer el archivo"
+        //Obtención del valor y guardado en el array
+        arr_car = JSON.parse(data);
+        
+        //res.send(arrNew[0])
+        let arrNew_car= arr_car.filter(x=> x.id_car== idNum)
+       
+        //se lee el archivo
+        let fileR_prod= fs.readFile("./productos/productos.json", "utf-8", (err, data_prod)=>{
+            if(err) throw "Error al leer el archivo"
+            arr_prod = JSON.parse(data_prod);
+            let producto_car_arr=arrNew_car[0].producto_car
+            //se busca el producto que corresponda con el id
+            let arrNew_prod= arr_prod.filter(x=> x.id== idNum_prod)
+            //se agrega al array
+            producto_car_arr.push(arrNew_prod[0])
+            //se hace entero el id
+            let id_car= parseInt(idNum)  
+            //se obtiene el timestamp
+            let timestamp_car= moment().format('MMMM Do YYYY, h:mm:ss a');
+            //se el dan valores al pbjeto y se guarda en el array
+            arr_car[id_car]={
+            "id_car": id_car,
+            "timestamp_car":timestamp_car,
+            "producto_car":producto_car_arr
+            }
+            res.send({"message": `Se ha agregado un nuevo producto al carrito: ${id_car}`, "data": arr_car[id_car]})
+            let producto_escritura= JSON.stringify(arr_car,null,2)
+             //Se guarda
+            fs.writeFileSync("./productos/carrito.json", producto_escritura, "utf-8")
+            
+        })
+
+    })    
+    
+})
+
+
+router.delete("/carrito/:id/productos/:id_prod", (req, res)=>{
+    //Obtención del Id a modificar
+    let idNum= req.params.id
+    let idNum_prod= req.params.id_prod
+    //Inicialización del array
+    let arr_car=[]
+    let arr_prod=[]
+    let carr_prod=[]
+    //Lectura del archivo
+    let fileR= fs.readFile("./productos/carrito.json", "utf-8", (err, data)=>{
+        if(err) throw "Error al leer el archivo"
+        //Obtención del valor y guardado en el array
+        arr_car = JSON.parse(data);
+        //se filtra según el id
+        let arrNew_car= arr_car.filter(x=> x.id_car== idNum)
+        //se crea un array de solo productos
+        let NewProducts=arrNew_car[0].producto_car
+      
+        //según el id ingresado, busca en el array original
+        let buscar_id=arrNew_car[0].producto_car.findIndex(x=>x.id==idNum_prod)
+       //Se elimina el objeto del array
+        NewProducts.splice(buscar_id, 1);
+        //se obtiene nuevo timestamp
+        let timestamp_car= moment().format('MMMM Do YYYY, h:mm:ss a');
+        //se hace entero el id
+        let id_car= parseInt(idNum)
+        //se dan valores al objeto y se guarda en el array
+        arr_car[id_car]={
+            "id_car": id_car,
+            "timestamp_car":timestamp_car,
+            "producto_car":NewProducts
+        }
+        //se firmate y guarda en el archivo
+        let producto_escritura= JSON.stringify(arr_car,null,2)
+        fs.writeFileSync("./productos/carrito.json", producto_escritura, "utf-8")
+        //se notifica al cliente 
+        res.send({"message": `Se ha eliminado el producto del carrito: ${id_car}`, "data": arr_car[id_car]})
+        console.log("Se ha eliminado un objeto del carrito: "+idNum)
+    })    
+    
+})
 
 module.exports = router;

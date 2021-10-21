@@ -1,0 +1,76 @@
+/*Coder House
+  Curso de Programación Backend
+  Grupo:22885
+  Entrega Final 1
+  Erick Omar Sandoval Báez
+*/
+Buenas, profe. 
+Espero se encuentre bien.
+
+Esta es una pequeña guía de cómo usar el programa debido a que no hice front.
+El proyecto se carga en el puerto 8080 o en el puerto de proceso (process.env.PORT)
+Todas las Rutas tienen /api como prefijo, por lo que iniciemos con /api/productos
+
+GET PRODUCTOS
+Simplemente muestra los productos agregados. Borré todos los productos del array para que pueda verificar que hice pruebas en casi todos los escenarios del programa.
+
+GET PRODUCTOS/ID
+Para usarlo, basta con agregar el id del objeto deseado. Una vez más, no hay productos cargados, por lo que para probarlo va a ser necesario primero usar el POST
+
+POST PRODUCTOS
+Se debe hacer la solicitud desde postman. El producto tiene la sigueinte estructura:
+obj = { 
+            name,
+            price,
+            thumbnail,
+            descripcion,
+            codigo,
+            stock,
+            timestamp, 
+            id
+        }
+pero para agregar un producto se debe hacer con la siguiente en formato RAW JSON: 
+obj = { 
+            name,
+            price,
+            thumbnail,
+            descripcion,
+            codigo,
+            stock
+        }
+
+PUT PRODUCTOS
+Es necesaria hacer la requisición en POSTMAN, usando la misma estructura del anterior, solo que en este caso es necesario agregar la id al final de la ruta. Ejemplo: localhost:8080/api/productos/2
+
+DELETE PRODUCTOS
+En este caso vi más sencillo modificar los valores del objeto que realmente eliminarlo por que asigno los id de los productos por medio de la longitud del array y si lo eliminara, se empotrarían los id cada que se elimine el producto y 2 para mostrar que un producto con ese id fue borrado en qué fecha, por eso es que dejo el timestamp. Para entrar, también es necesario agregar el id del producto a borrar al final de la ruta
+
+Para comprobar todos los resultados, se puede verificar el archivo JSON ubicado en la carpeta 'productos' con el nombre 'productos.json', según las pruebas que hice, es necesario que esté inicializado con un array vacío, por eso es que también lo cargo para evitar problemas.
+
+Ahora, si seguimos la ruta carrito encontraremos lo siguiente:
+
+POST CARRITO
+Cada vez que se hace la rquisición con el método POST, agrega al array de carritos un nuevo carrito, le añade la marca de tiempo en que fue creado e inicializa el array de productos  vacío.
+
+DELETE CARRITO
+En este caso, al igual que en el de producto, vi más factible simplemente borrar el array de productos del carrito, ya que si no lo hacía así, me creaba un conflicto con las ids de los demás carritos.
+
+GET CARRITO
+En ese caso simplemente muestra los productos del carrito si se sigue la ruta localhost:8080/api/carrito/(id del carrito)/productos.
+
+POST CARRITO (PRODUCTOS)
+Fue el que se me hizo más complicado de hacer, pues tuve ciertos momentos de confusión entre los dos arrays de lectura que estaba tieniendo, sumados a los que estaba modificando. En este caso se necesita usar la ruta localhost:8080/api/carrito/(id del carrito)/productos/(id del producto)
+
+DELETE CARRITO (PRODUCTOS)
+Para este es necesaria la misma estructura que en el punto anterior.
+
+De igual manera, todo esto puede ser comprobable tanto con solicitudes get, como monitoreando el archivo 'carrito.json', ubicado en la carpeta 'productos' del proyecto.
+
+
+
+
+Sé que el programa no es perfecto, pero espero le agrade lo que he avanzado y quedo pendiente a sus recomendaciones y comentarios.
+Saludos desde México, profe :) 
+PD:
+Sé que le gusta el futbol, así que le dejo una canción típica mexicana que se canta cada que juega la selección, es como nuestro segundo himno (https://www.youtube.com/watch?v=L6rlJLWXphI)
+
